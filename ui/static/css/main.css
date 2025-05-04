@@ -1,0 +1,37 @@
+/* Reset default spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #B9929F; /* Pinkish background */
+    color: white;
+    min-height: 100vh;
+}
+
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    margin: 40px auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header inside the grid */
+.header {
+    background-color: #B9929F;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.header h1,
+.header h2 {
+    margin-bottom: 10px;
+    color: white;
+}
