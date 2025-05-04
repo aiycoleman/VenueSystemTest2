@@ -6,8 +6,6 @@ package main
 import (
 	"html/template"
 	"path/filepath"
-
-	_ "github.com/aiycoleman/VenueSystemTest2/cmd/web/handlers"
 )
 
 // newTemplateCache loads all HTML templates from the `./ui/html/` directory

@@ -12,7 +12,6 @@ import (
 	"time"
 
 	// "github.com/aiycoleman/VenueSystemTest2/internal/data"
-	_ "github.com/aiycoleman/VenueSystemTest2/cmd/web/handlers"
 	_ "github.com/lib/pq"
 )
 
