@@ -9,6 +9,7 @@ package main
 type TemplateData struct {
 	Title      string
 	HeaderText string
+	Flash      string
 	// User       []data.Users
 	// Venue       *data.Venue
 	// Venues      []data.Venue

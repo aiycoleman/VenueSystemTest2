@@ -15,7 +15,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
 	// Find all template files in the `./ui/html/` directory with a `.tmpl` extension.
-	pages, err := filepath.Glob("./ui/html/*.tmpl")
+	pages, err := filepath.Glob("./ui/static/html/*.tmpl")
 	if err != nil {
 		// Return an error if there's an issue retrieving the template files.
 		return nil, err

@@ -2,13 +2,25 @@
 .navbar {
     background-color: #333;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     padding: 12px 20px;
+}
+
+/* Left side links (Home, Venues, Reservations) */
+.navbar-left {
+    display: flex;
     gap: 20px;
 }
 
-.navbar a,
-.navbar .dropbtn {
+.dropbtn {
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left a,
+.navbar-left .dropbtn {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -18,12 +30,31 @@
     cursor: pointer;
 }
 
-.navbar .dropdown {
-    padding: 10px 10px;
+.navbar-left a:hover,
+.navbar-left .dropbtn:hover {
+    background-color: #444;
+    border-radius: 4px;
 }
 
-.navbar a:hover,
-.navbar .dropbtn:hover {
+/* Right side links (Sign Up, Login, Account) */
+.navbar-right {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-right a,
+.navbar-right .dropbtn {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.navbar-right a:hover,
+.navbar-right .dropbtn:hover {
     background-color: #444;
     border-radius: 4px;
 }

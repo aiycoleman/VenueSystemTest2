@@ -9,21 +9,27 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">Home</a>
-        <a href="#">Venues</a>
-        <div class="dropdown">
-            <a href="#" class="dropbtn">Reservations</a>
-            <div class="dropdown-content">
-                <a href="#">Confirmed</a>
-                <a href="#>Cancelled</a>
+        <div class="navbar-left">
+            <a href="/">Home</a>
+            <a href="/venuelisting">Venues</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Reservations</a>
+                <div class="dropdown-content">
+                    <a href="/reservations">Confirmed</a>
+                    <a href="/reservations/cancelled">Cancelled</a>
+                </div>
             </div>
-        <a href="#">Sign Up</a>
-        <a href="#">Login</a>
-        <div class="dropdown">
-            <a href="#" class="dropbtn">Account</a>
-            <div class="dropdown-content">
-                <a href="#">Edit</a>
-                <a href="#">Logout</a>
+        </div>
+        
+        <div class="navbar-right">
+            <a href="#">Sign Up</a>
+            <a href="#">Login</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Account</a>
+                <div class="dropdown-content">
+                    <a href="#">Edit</a>
+                    <a href="#">Logout</a>
+                </div>
             </div>
         </div>
     </div>

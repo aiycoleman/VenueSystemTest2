@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"database/sql"
 	"flag"
 	"html/template"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	// "github.com/aiycoleman/VenueSystemTest2/internal/data"
+	"github.com/golangcollege/sessions"
 	_ "github.com/lib/pq"
 )
 
@@ -23,12 +25,15 @@ type application struct {
 	// review        *data.ReviewModel
 	logger        *slog.Logger
 	templateCache map[string]*template.Template
+	session       *sessions.Session
+	tlsConfig     *tls.Config
 }
 
 // Define command-line flags for server address and database connection
 func main() {
 	addr := flag.String("addr", "", "HTTP network address")
 	dsn := flag.String("dsn", "", "PostgreSQL DSN")
+	secret := flag.String("secret", "e3f87@a6a4*3f2d18+a5@6c76a09d1f2", "Secret key")
 
 	// Parse the command-line flags
 	flag.Parse()
@@ -56,14 +61,27 @@ func main() {
 	// Ensure the database connection is closed when the application exits
 	defer db.Close()
 
+	// Creating states
+	session := sessions.New([]byte(*secret))
+	session.Lifetime = 12 * time.Hour
+	session.Secure = true
+
+	// Configuring TLS
+	tlsConfig := &tls.Config{
+		PreferServerCipherSuites: true,
+		CurvePreferences:         []tls.CurveID{tls.X25519, tls.CurveP256}, // gets a new encription Key everytime you make a new session
+	}
+
 	// Initialize the application struct with dependencies
 	app := &application{
 		addr: addr,
 		// venue:         &data.VenueModel{DB: db},
 		// review:        &data.ReviewModel{DB: db},
 		// reservation:   &data.ReservationModel{DB: db},
+		session:       session,
 		logger:        logger,
 		templateCache: templateCache,
+		tlsConfig:     tlsConfig,
 	}
 
 	// Start the HTTP server

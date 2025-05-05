@@ -8,6 +8,7 @@ import (
 )
 
 func (app *application) routes() http.Handler {
+
 	// Create a new ServeMux (multiplexer) to manage request routing.
 	mux := http.NewServeMux()
 
@@ -20,6 +21,9 @@ func (app *application) routes() http.Handler {
 	// Route for the all pages, mapping the root URL to the their respective handler.
 	mux.HandleFunc("GET /{$}", app.home)
 
+	// User Authentication
+	// mux
+
 	// Wrap the router with a logging middleware to track requests.
-	return app.loggingMiddleware(mux)
+	return app.session.Enable(app.loggingMiddleware(mux))
 }

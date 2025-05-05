@@ -19,7 +19,8 @@ func (app *application) serve() error {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		ErrorLog:     slog.NewLogLogger(app.logger.Handler(), slog.LevelError), // Logs server errors
+		TLSConfig:    app.tlsConfig,
 	}
 	app.logger.Info("starting server", "addr", srv.Addr)
-	return srv.ListenAndServe() // begins handling http requests
+	return srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem") // begins handling http requests
 }
