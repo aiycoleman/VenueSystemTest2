@@ -35,3 +35,12 @@ body {
     margin-bottom: 10px;
     color: white;
 }
+
+.flash-message {
+    background-color: #ffffff;
+    color: #333;
+    padding: 10px;
+    margin: 15px auto;
+    width: fit-content;
+    border-radius: 5px;
+}

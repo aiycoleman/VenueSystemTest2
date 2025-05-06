@@ -23,19 +23,18 @@
         
         <div class="navbar-right">
             <a href="/user/signup">Sign Up</a>
-            <a href="#">Login</a>
-            <div class="dropdown">
-                <a href="#" class="dropbtn">Account</a>
-                <div class="dropdown-content">
-                    <a href="#">Edit</a>
-                    <a href="#">Logout</a>
-                </div>
-            </div>
+            <a href="/user/login">Login</a>
+            <a href="/user/logout">Logout</a>
         </div>
     </div>
 
     <div class="grid-container">
         <div class="header">
+        {{ if .Flash }}
+            <div class="flash-message">
+                {{ .Flash }}
+            </div>
+        {{ end }}
             <h1>{{.Title}}</h1>
             <h2>{{.HeaderText}}</h2>
         </div>

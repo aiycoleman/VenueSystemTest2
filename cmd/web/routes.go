@@ -5,30 +5,43 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
-
-	// Create a new ServeMux (multiplexer) to manage request routing.
 	mux := http.NewServeMux()
 
-	// File server for serving static files (CSS, JS, images)
+	// Static file server
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-
-	// Serve static files from the "/static" path.
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
-	// Route for the all pages, mapping the root URL to the their respective handler.
-	mux.HandleFunc("GET /{$}", app.home)
+	// Base middleware chain: Logging + CSRF + Sessions
+	standardMiddleware := alice.New(
+		app.recoverPanic,
+		app.logRequest,
+		app.secureHeaders,
+	)
+	dynamicMiddleware := alice.New(
+		app.session.Enable,
+		app.loggingMiddleware,
+		noSurf,
+	)
 
-	// User Authentication
-	mux.HandleFunc("GET /user/signup", app.signupUserForm)
-	mux.HandleFunc("POST /user/signup", app.signupUser)
+	// Public routes
+	mux.Handle("GET /{$}", dynamicMiddleware.ThenFunc(app.home))
 
-	// GET /user/login	loginUserForm
-	// POST /user/login    logingUser
-	// POST /user.logout	logoutUser
+	mux.Handle("GET /user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
+	mux.Handle("POST /user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 
-	// Wrap the router with a logging middleware to track requests.
-	return app.session.Enable(app.loggingMiddleware(mux))
+	mux.Handle("GET /user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
+	mux.Handle("POST /user/login", dynamicMiddleware.ThenFunc(app.loginUser))
+	mux.Handle("POST /user/logout", dynamicMiddleware.ThenFunc(app.logoutUser))
+
+	// Example of protected route (uncomment when requireAuthentication is implemented)
+	// protected := dynamicMiddleware.Append(app.requireAuthentication)
+	// mux.Handle("GET /dashboard", protected.ThenFunc(app.dashboard))
+
+	// Final handler with outermost middleware
+	return standardMiddleware.Then(mux)
 }

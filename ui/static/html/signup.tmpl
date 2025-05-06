@@ -24,15 +24,9 @@
         </div>
         
         <div class="navbar-right">
-            <a href="#">Sign Up</a>
-            <a href="#">Login</a>
-            <div class="dropdown">
-                <a href="#" class="dropbtn">Account</a>
-                <div class="dropdown-content">
-                    <a href="#">Edit</a>
-                    <a href="#">Logout</a>
-                </div>
-            </div>
+            <a href="/user/signin">Sign Up</a>
+            <a href="/user/login">Login</a>
+            <a href="/user/logout">Logout</a>
         </div>
     </div>
 
@@ -45,6 +39,8 @@
         <!-- Sign-Up Form -->
         <div class="form-container">
             <form method="POST" action="/user/signup" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ .CSRFToken}}">
+                
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required
                     value="{{index .FormData "name"}}"
