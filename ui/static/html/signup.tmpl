@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/nav.css">
+    <link rel="stylesheet" href="../static/css/sign.css">
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="/">Home</a>
+            <a href="/venuelisting">Venues</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Reservations</a>
+                <div class="dropdown-content">
+                    <a href="/reservations">Confirmed</a>
+                    <a href="/reservations/cancelled">Cancelled</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <a href="#">Sign Up</a>
+            <a href="#">Login</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Account</a>
+                <div class="dropdown-content">
+                    <a href="#">Edit</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="header">
+            <h1>{{.Title}}</h1>
+            <h2>{{.HeaderText}}</h2>
+        </div>
+
+        <!-- Sign-Up Form -->
+        <div class="form-container">
+            <form method="POST" action="/user/signup" novalidate>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required
+                    value="{{index .FormData "name"}}"
+                    class="{{if .FormErrors.name}}invalid{{end}}">
+                {{with .FormErrors.name}}<div class="error">{{.}}</div>{{end}}
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required
+                    value="{{index .FormData "email"}}"
+                    class="{{if .FormErrors.email}}invalid{{end}}">
+                {{with .FormErrors.email}}<div class="error">{{.}}</div>{{end}}
+
+                <label for="role">Role</label>
+                <select id="role" name="role" required class="{{if .FormErrors.role}}invalid{{end}}">
+                    <option value="" disabled {{if not (index .FormData "role")}}selected{{end}}>Select a role</option>
+                    <option value="1" {{if eq (index .FormData "role") "1"}}selected{{end}}>Owner</option>
+                    <option value="2" {{if eq (index .FormData "role") "2"}}selected{{end}}>Customer</option>
+                </select>
+                {{with .FormErrors.role}}<div class="error">{{.}}</div>{{end}}
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required
+                    class="{{if .FormErrors.hashedpassword}}invalid{{end}}">
+                {{with .FormErrors.hashedpassword}}<div class="error">{{.}}</div>{{end}}
+
+                <button type="submit">Sign Up</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

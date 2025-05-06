@@ -12,7 +12,7 @@ import (
 	"os"
 	"time"
 
-	// "github.com/aiycoleman/VenueSystemTest2/internal/data"
+	"github.com/aiycoleman/VenueSystemTest2/internal/data"
 	"github.com/golangcollege/sessions"
 	_ "github.com/lib/pq"
 )
@@ -23,6 +23,7 @@ type application struct {
 	// venue         *data.VenueModel
 	// reservation   *data.ReservationModel
 	// review        *data.ReviewModel
+	users         *data.UsersModel
 	logger        *slog.Logger
 	templateCache map[string]*template.Template
 	session       *sessions.Session
@@ -78,6 +79,7 @@ func main() {
 		// venue:         &data.VenueModel{DB: db},
 		// review:        &data.ReviewModel{DB: db},
 		// reservation:   &data.ReservationModel{DB: db},
+		users:         &data.UsersModel{DB: db},
 		session:       session,
 		logger:        logger,
 		templateCache: templateCache,

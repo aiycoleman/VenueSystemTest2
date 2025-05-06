@@ -22,7 +22,12 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /{$}", app.home)
 
 	// User Authentication
-	// mux
+	mux.HandleFunc("GET /user/signup", app.signupUserForm)
+	mux.HandleFunc("POST /user/signup", app.signupUser)
+
+	// GET /user/login	loginUserForm
+	// POST /user/login    logingUser
+	// POST /user.logout	logoutUser
 
 	// Wrap the router with a logging middleware to track requests.
 	return app.session.Enable(app.loggingMiddleware(mux))

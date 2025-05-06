@@ -15,8 +15,8 @@ type TemplateData struct {
 	// Venues      []data.Venue
 	// Reservation []data.Reservation
 	// Reviews     []data.Review
-	// FormErrors  map[string]string
-	// FormData    map[string]string
+	FormErrors map[string]string
+	FormData   map[string]string
 }
 
 // Initializes a new TemplateData struct with default values.
@@ -28,7 +28,7 @@ func NewTemplateData() *TemplateData {
 		// Venues:      []data.Venue{},
 		// Reservation: []data.Reservation{},
 		// Reviews:     []data.Review{},
-		// FormErrors:  map[string]string{},
-		// FormData:    map[string]string{},
+		FormErrors: map[string]string{},
+		FormData:   map[string]string{},
 	}
 }
