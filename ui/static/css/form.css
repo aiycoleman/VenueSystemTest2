@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #B9929F;
+    margin: 0  0;
+}
+
+/* Add a specific class for the content we want to center */
+.page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Styling for the header */
+h1, h2 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+h2 {
+    padding-bottom: 10px;
+}
+
+/* Form container */
+.form-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #B9929F;
+    outline: none;
+}
+
+/* Styling for Add Review button */
+button.add {
+    background-color: #B9929F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 40px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button.add:hover {
+    background: #333;
+}
+
+/* Error Styling */
+.error {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+    text-decoration: underline;
+}
+
+input.invalid, textarea.invalid {
+    border: 3px solid #FF0000;
+}
+
+/* Styling for the link to view feedbacks */
+.listlink a {
+    text-decoration: none;
+    background-color: #B9929F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 40px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.listlink a:hover {
+    background-color: #753a67;
+}
+
+hr {
+    border: 1px solid #9C528B; 
+    width: 85%;
+}

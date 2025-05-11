@@ -1,0 +1,190 @@
+body {
+    background-color: #B9929F;
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  
+  /* Layout Containers */
+  .venue-container {
+    padding: 2rem;
+  }
+  
+  .venue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .header-left h1,
+  .header-left p {
+    margin: 0;
+  }
+  
+  /* Settings Dropdown */
+  .settings-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .settings-btn {
+    background-color: #ffffff;
+    color: #B9929F;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    font-family: Arial, sans-serif;
+  }
+  
+  .settings-btn:hover {
+    background-color: #ffffff;
+    color: #B9929F;
+  }
+  
+  .settings-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1;
+  }
+  
+  .settings-dropdown:hover .settings-content {
+    display: block;
+  }
+  
+  /* About Section */
+  .about-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .about-right img {
+    max-width: 300px;
+    border-radius: 8px;
+  }
+  
+  .info-line {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+  }
+  
+  /* Interaction Section */
+  .interaction-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  
+  .reviews,
+  .reservation-form {
+    flex: 1;
+  }
+  
+  /* White Card Background */
+  .white-bg {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .reservation-form.white-bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  /* Add Review Toggle */
+  .add-review-btn {
+    border-radius: 4px;
+    background-color: transparent;
+    border: none;
+    padding: 0.1rem 1rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .add-review-btn:hover {
+    background-color: #ffffff;
+    color: #B9929F;
+  }
+  
+  /* Form Styles */
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  input[type="time"],
+  textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    resize: none;
+    min-height: 100px;
+  }
+  
+  form button[type="submit"] {
+    background-color: white;
+    color: #B9929F;
+    border: 1px solid #B9929F;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #B9929F;
+    color: white;
+  }
+  
+  /* Error Styling */
+  .error {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+    text-decoration: underline;
+  }
+  
+  input.invalid, textarea.invalid {
+    border: 3px solid #FF0000;
+  }
+  
+  /* Review Form Layout */
+  #review-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #review-form {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Review Cards */
+  .review-card {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
