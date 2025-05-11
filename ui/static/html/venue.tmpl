@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="../static/css/venuelist.css">
+    <link rel="stylesheet" href="../static/css/nav.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/venuelisting">Venues</a>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Reservations</a>
+            <div class="dropdown-content">
+                <a href="/reservations">Confirmed</a>
+                <a href="/reservations/cancelled">Cancelled</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="venue-header">
+        <div class="header-text">
+            <h1>{{.Title}}</h1>
+            <h2>{{.HeaderText}}</h2>
+        </div>
+        <a class="add-button" href="/venueform">Add Venue</a>
+    </div>
+
+
+    <div class="venue-container">
+        {{range .Venues}}
+        <div class="venue-card">
+            <h2>{{.VenueName}}</h2>
+            <p><strong>Location: </strong>{{.Location}}</p>
+            <p>{{.Description}}</p>
+            <img src="{{.Image}}" alt="Venue image" class="venue-image" />
+            <br>
+            <div class="venue-book">
+                <a class="view-button" href="/venue/{{.ID}}/view">View</a>
+            </div>
+        </div>
+        {{else}}
+        <p>No Venues listed yet.</p>
+        {{end}}
+    </div>
+</body>
+</html>

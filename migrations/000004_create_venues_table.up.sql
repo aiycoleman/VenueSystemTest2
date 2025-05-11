@@ -2,8 +2,10 @@
 CREATE TABLE IF NOT EXISTS venues (
     id bigserial PRIMARY KEY,
     owner int NOT NULL,
+    name text NOT NUll,
     description text NOT NULL,
     location text NOT NULL,
+    email citext UNIQUE NOT NULL,
     price_per_hour DECIMAL(10,2) NOT NULL,
     max_capacity INT NOT NULL,
     image_link text NOT NULL,

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/form.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/venuelisting">Venues</a>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Reservations</a>
+            <div class="dropdown-content">
+                <a href="/reservations">Confirmed</a>
+                <a href="/reservations/cancelled">Cancelled</a>
+            </div>
+        </div>
+    </div>
+
+    <h1>{{.Title}}</h1>
+
+    <main class="page-content">
+        {{range .Reservation}}
+        <div class="form-container">
+            <form action="/reservations/update/{{.ID}}" method="POST">
+
+                <div class="form-group">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" 
+                           value="{{with $.FormData.start_date}}{{.}}{{else}}{{.StartDate.Format "2006-01-02"}}{{end}}" required>
+                    {{with $.FormErrors.start_date}}<p class="error">{{.}}</p>{{end}}
+                </div>
+
+                <div class="form-group">
+                    <label for="start_time">Start Time</label>
+                    <input type="time" id="start_time" name="start_time" 
+                           value="{{with $.FormData.start_time}}{{.}}{{else}}{{.StartTime.Format "15:04"}}{{end}}" required>
+                    {{with $.FormErrors.start_time}}<p class="error">{{.}}</p>{{end}}
+                </div>
+
+                <div class="form-group">
+                    <label for="end_time">End Time</label>
+                    <input type="time" id="end_time" name="end_time" 
+                           value="{{with $.FormData.end_time}}{{.}}{{else}}{{.EndTime.Format "15:04"}}{{end}}" required>
+                    {{with $.FormErrors.end_time}}<p class="error">{{.}}</p>{{end}}
+                </div>
+
+                <input type="hidden" name="venue_id" value="{{.VenueID}}">
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        {{ $selected := or $.FormData.status .Status }}
+                        <option value="confirmed" {{if eq $selected "confirmed"}}selected{{end}}>Confirmed</option>
+                        <option value="cancelled" {{if eq $selected "cancelled"}}selected{{end}}>Cancelled</option>
+                    </select>
+                    {{with $.FormErrors.status}}<p class="error">{{.}}</p>{{end}}
+                </div>
+
+                <button type="submit" class="add">Update Reservation</button>
+            </form>
+        </div>
+        {{end}}
+    </main>
+
+</body>
+</html>
