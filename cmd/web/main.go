@@ -19,8 +19,8 @@ import (
 
 // application struct holds the application's dependencies.
 type application struct {
-	addr *string
-	// venue         *data.VenueModel
+	addr  *string
+	venue *data.VenueModel
 	// reservation   *data.ReservationModel
 	// review        *data.ReviewModel
 	users         *data.UsersModel
@@ -75,8 +75,8 @@ func main() {
 
 	// Initialize the application struct with dependencies
 	app := &application{
-		addr: addr,
-		// venue:         &data.VenueModel{DB: db},
+		addr:  addr,
+		venue: &data.VenueModel{DB: db},
 		// review:        &data.ReviewModel{DB: db},
 		// reservation:   &data.ReservationModel{DB: db},
 		users:         &data.UsersModel{DB: db},

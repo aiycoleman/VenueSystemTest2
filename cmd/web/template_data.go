@@ -32,6 +32,7 @@ func NewTemplateData(r *http.Request) *TemplateData {
 		Title:      "Default Title",
 		HeaderText: "Default HeaderText",
 		CSRFToken:  nosurf.Token(r),
+		Flash:      string,
 		//User:       []data.Users{},
 		// Venues:      []data.Venue{},
 		// Reservation: []data.Reservation{},

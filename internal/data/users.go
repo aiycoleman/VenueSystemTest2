@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ErrRecordNotFound     = errors.New("models: no matching recod found")
+	// ErrRecordNotFound     = errors.New("models: no matching recod found")
 	ErrInvalidCredentials = errors.New("models: invalid credentials")
 	ErrDuplicateEmail     = errors.New("models: duplicate email")
 )

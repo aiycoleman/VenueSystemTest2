@@ -1,5 +1,5 @@
--- Filename: migrations/000004_create_venues_table.up.sql
-CREATE TABLE IF NOT EXISTS venues (
+-- Filename: migrations/000004_create_venue_table.up.sql
+CREATE TABLE IF NOT EXISTS venue (
     id bigserial PRIMARY KEY,
     owner int NOT NULL,
     name text NOT NUll,
