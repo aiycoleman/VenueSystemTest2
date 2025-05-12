@@ -26,8 +26,14 @@
             <h1>{{.Title}}</h1>
             <h2>{{.HeaderText}}</h2>
         </div>
-        <a class="add-button" href="/venueform">Add Venue</a>
+        <a class="add-button" href="/venue/form">Add Venue</a>
     </div>
+
+    {{if .Flash}}
+    <div class="flash-message">
+        {{.Flash}}
+    </div>
+    {{end}}
 
 
     <div class="venue-container">
@@ -39,7 +45,7 @@
             <img src="{{.Image}}" alt="Venue image" class="venue-image" />
             <br>
             <div class="venue-book">
-                <a class="view-button" href="/venue/{{.ID}}/view">View</a>
+                <a class="view-button" href="/venue/{{.ID}}">View</a>
             </div>
         </div>
         {{else}}

@@ -27,21 +27,19 @@
     </div>
 </div>
 
+  {{if .Flash}}
+        <div class="flash-message">
+            {{.Flash}}
+  </div>
+  {{end}}
+
 <<div class="venue-container">
     {{range .Reservation}}
     <div class="venue-card">
-        <div class="venue-title">
-            <h3>{{.CustomerName}}</h3>
-        </div>
-
+    
         <!-- Display venue name directly from the reservation -->
         <div class="venue-info">
             <span><strong>Venue:</strong> {{.VenueName}}</span>
-        </div>
-
-        <div class="venue-info">
-            <span><strong>Email:</strong> {{.Email}}</span>
-            <span><strong>Status:</strong> {{.Status}}</span>
         </div>
 
         <div class="venue-info">

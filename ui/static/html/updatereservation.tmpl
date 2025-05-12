@@ -55,8 +55,8 @@
                     <label for="status">Status</label>
                     <select id="status" name="status" required>
                         {{ $selected := or $.FormData.status .Status }}
-                        <option value="confirmed" {{if eq $selected "confirmed"}}selected{{end}}>Confirmed</option>
-                        <option value="cancelled" {{if eq $selected "cancelled"}}selected{{end}}>Cancelled</option>
+                        <option value="1" {{if eq $selected "confirmed"}}selected{{end}}>Confirmed</option>
+                        <option value="2" {{if eq $selected "cancelled"}}selected{{end}}>Cancelled</option>
                     </select>
                     {{with $.FormErrors.status}}<p class="error">{{.}}</p>{{end}}
                 </div>

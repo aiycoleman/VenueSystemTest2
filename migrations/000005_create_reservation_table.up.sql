@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     start_date date NOT NULL,
     start_time time NOT NULL,  
     end_time time NOT NULL, 
-    status int NOT NULL,
+    status int NOT NULL DEFAULT 1,
     created_at timestamp(0) WITH TIME ZONE NOT NULL DEFAULT NOW(),
     FOREIGN KEY (venue) REFERENCES venue(id) ON DELETE CASCADE,
     FOREIGN KEY (customer) REFERENCES users(id) ON DELETE CASCADE,

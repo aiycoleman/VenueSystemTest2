@@ -37,11 +37,10 @@
             <h2>{{.HeaderText}}</h2>
         </div>
 
-        {{ if .Flash }}
-            <div class="flash-message">
-                {{ .Flash }}
-            </div>
+        {{ if .FormErrors.default }}
+            <div class="error">{{ .FormErrors.default }}</div>
         {{ end }}
+
 
         <!-- Sign-Up Form -->
         <div class="form-container">

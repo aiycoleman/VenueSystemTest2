@@ -20,6 +20,12 @@
     </div>
   </div>
 
+  {{if .Flash}}
+        <div class="flash-message">
+            {{.Flash}}
+  </div>
+  {{end}}
+
   <div class="venue-container">
     <div class="venue-header">
       <div class="header-left">
@@ -60,10 +66,12 @@
     <div class="interaction-section">
       <div class="reviews">
         <h2>Reviews</h2>
+        
         <div class="add-review-toggle">
           <span>Make a Review</span>
           <button class="add-review-btn" onclick="toggleReviewForm()">➕</button>
         </div>
+        
         <div id="review-form" style="display: none;">
           <form method="POST" action="/venue/{{.Venue.ID}}/review" class="white-bg">
             <textarea name="comment" placeholder="Your review here..."
@@ -77,7 +85,7 @@
         {{if .Reviews}}
           {{range .Reviews}}
             <div class="review-card">
-              <p><strong>{{.CustomerName}}</strong> ({{.Email}})</p>
+              <p><strong>{{.CustomerName}}</strong>
               <p>{{.Comment}}</p>
               <hr>
             </div>

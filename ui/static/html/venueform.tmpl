@@ -24,8 +24,10 @@
         <h1>{{.Title}}</h1>
 
         <div class="form-container">
-            <form action="/venueadd" method="POST">
+            <form action="/venue/add" method="POST">
+                {{ .CSRFToken }}
                 <div class="form-group">
+                
                     <h2>{{.HeaderText}}</h2>
 
                     <input type="text" name="venue_name" placeholder="Venue name" 
