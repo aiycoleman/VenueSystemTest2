@@ -1,6 +1,3 @@
-// filename: routes.go
-// Description: Maps specific URL paths to their corresponding handler functions
-
 package main
 
 import (
@@ -25,6 +22,7 @@ func (app *application) routes() http.Handler {
 	dynamicMiddleware := alice.New(
 		app.session.Enable,
 		app.loggingMiddleware,
+		app.authenticate,
 		// noSurf,
 	)
 
@@ -38,31 +36,37 @@ func (app *application) routes() http.Handler {
 	mux.Handle("POST /user/login", dynamicMiddleware.ThenFunc(app.loginUser))
 	mux.Handle("POST /user/logout", dynamicMiddleware.ThenFunc(app.logoutUser))
 
-	mux.Handle("GET /venue/listing", dynamicMiddleware.ThenFunc(app.venueListing)) // access you book, add, edit, delete
-	mux.Handle("GET /venue/form", dynamicMiddleware.ThenFunc(app.venueForm))       // Venue form to add new venue
-	mux.Handle("POST /venue/add", dynamicMiddleware.ThenFunc(app.createVenue))
-	mux.Handle("GET /venue/{id}", dynamicMiddleware.ThenFunc(app.viewVenue))
+	// Protected routes - require authentication
+	protected := dynamicMiddleware.Append(app.requireAuthentication)
 
-	mux.Handle("GET /venue/{id}/edit", dynamicMiddleware.ThenFunc(app.showUpdateVenueForm))
-	mux.Handle("POST /venue/{id}/edit", dynamicMiddleware.ThenFunc(app.updateVenue))
-	mux.Handle("POST /venue/{id}/delete", dynamicMiddleware.ThenFunc(app.deleteVenue))
+	// Role-based access: owner role
+	ownerProtected := protected.Append(app.requireRole(1))
 
-	mux.Handle("POST /reservation/{id}/create", dynamicMiddleware.ThenFunc(app.createReservation))
+	// Role-based access: User role
+	userProtected := protected.Append(app.requireRole(2))
 
-	mux.Handle("GET /reservations", dynamicMiddleware.ThenFunc(app.showAllReservations))
-	mux.Handle("GET /reservations/cancelled", dynamicMiddleware.ThenFunc(app.showCancelledReservations))
+	// Public routes accessible by anyone
+	mux.Handle("GET /venue/listing", protected.ThenFunc(app.venueListing))  // Access to book, add, edit, delete
+	mux.Handle("GET /venue/form", ownerProtected.ThenFunc(app.venueForm))   // Only accessible by owner
+	mux.Handle("POST /venue/add", ownerProtected.ThenFunc(app.createVenue)) // Only accessible by owner
+	mux.Handle("GET /venue/{id}", protected.ThenFunc(app.viewVenue))
 
-	mux.Handle("GET /reservations/update/{id}", dynamicMiddleware.ThenFunc(app.showUpdateReservationForm))
-	mux.Handle("POST /reservations/update/{id}", dynamicMiddleware.ThenFunc(app.updateReservation))
+	mux.Handle("GET /venue/{id}/edit", ownerProtected.ThenFunc(app.showUpdateVenueForm)) // owner only
+	mux.Handle("POST /venue/{id}/edit", ownerProtected.ThenFunc(app.updateVenue))        // owner only
+	mux.Handle("POST /venue/{id}/delete", ownerProtected.ThenFunc(app.deleteVenue))      // owner only
 
-	mux.Handle("POST /reservations/cancel/{id}", dynamicMiddleware.ThenFunc(app.cancelReservation))
+	mux.Handle("POST /reservation/{id}/create", userProtected.ThenFunc(app.createReservation)) // User only
 
-	mux.Handle("POST /venue/{id}/review", dynamicMiddleware.ThenFunc(app.submitReview))
+	mux.Handle("GET /reservations", userProtected.ThenFunc(app.showAllReservations))                 // User only
+	mux.Handle("GET /reservations/cancelled", userProtected.ThenFunc(app.showCancelledReservations)) // User only
 
-	// Example of protected route (uncomment when requireAuthentication is implemented)
-	// protected := dynamicMiddleware.Append(app.requireAuthentication)
-	// mux.Handle("GET /dashboard", protected.ThenFunc(app.dashboard))
+	mux.Handle("GET /reservations/update/{id}", userProtected.ThenFunc(app.showUpdateReservationForm)) // User only
+	mux.Handle("POST /reservations/update/{id}", userProtected.ThenFunc(app.updateReservation))        // User only
+
+	mux.Handle("POST /reservations/cancel/{id}", userProtected.ThenFunc(app.cancelReservation)) // User only
+
+	mux.Handle("POST /venue/{id}/review", userProtected.ThenFunc(app.submitReview)) // Accessible by both user and owner
 
 	// Final handler with outermost middleware
-	return standardMiddleware.Then(mux)
+	return app.session.Enable(standardMiddleware.Then(mux))
 }

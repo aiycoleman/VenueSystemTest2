@@ -4,10 +4,17 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
+	"github.com/aiycoleman/VenueSystemTest2/internal/data"
 	"github.com/justinas/nosurf"
 )
+
+type contextKey string
+
+const contextKeyUser = contextKey("user")
+const contextKeyIsAuthenticated = contextKey("isAuthenticated")
 
 func (app *application) loggingMiddleware(next http.Handler) http.Handler {
 	// Define a handler function that wraps the provided handler.
@@ -63,19 +70,61 @@ func (app *application) logRequest(next http.Handler) http.Handler {
 	})
 }
 
-// is authenticated is not initialized
+// Middleware to check if the user is authenticated
+func (app *application) isAuthenticated(r *http.Request) bool {
+	isAuth, ok := r.Context().Value(contextKeyIsAuthenticated).(bool)
+	return ok && isAuth
+}
 
-// func (app *application) requireAuthentication(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		if !app.isAuthenticated(r) {
-// 			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
-// 			return
-// 		}
-// 		w.Header().Add("Cache-Control", "no-store")
-// 		next.ServeHTTP(w, r)
-// 	})
-// }
+// Middleware to enforce authentication
+func (app *application) requireAuthentication(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !app.isAuthenticated(r) {
+			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+			return
+		}
+		w.Header().Add("Cache-Control", "no-store")
+		next.ServeHTTP(w, r)
+	})
+}
 
+// Middleware to check the role of the authenticated user
+func (app *application) requireRole(role int) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			user := app.contextGetUser(r.Context())
+			if user == nil {
+				http.Redirect(w, r, "/unauthorized", http.StatusSeeOther)
+				return
+			}
+
+			app.logger.Info("Checking user role",
+				"userID", user.ID,
+				"userRole", user.Role,
+				"requiredRole", role,
+			)
+
+			// Convert role to int64 for comparison
+			if user.Role != int64(role) {
+				http.Redirect(w, r, "/unauthorized", http.StatusSeeOther)
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+// Helper function to get user from request context
+// This is your context function for retrieving the user from context
+func (app *application) contextGetUser(ctx context.Context) *data.Users {
+	user, ok := ctx.Value(contextKeyUser).(*data.Users)
+	if !ok {
+		return nil
+	}
+	return user
+}
+
+// CSRF protection middleware
 func noSurf(next http.Handler) http.Handler {
 	csrfHandler := nosurf.New(next)
 	csrfHandler.SetBaseCookie(http.Cookie{
@@ -84,4 +133,28 @@ func noSurf(next http.Handler) http.Handler {
 		Secure:   true,
 	})
 	return csrfHandler
+}
+
+// Middleware to authenticate and set user in context
+func (app *application) authenticate(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id, ok := app.session.Get(r, "authenticatedUserID").(int)
+		if !ok {
+			next.ServeHTTP(w, r) // Not authenticated — let the next handler decide
+			return
+		}
+
+		user, err := app.users.Get(id)
+		if err != nil {
+			// Optionally clear session on error
+			app.session.Remove(r, "authenticatedUserID")
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		// Store user in the request context
+		ctx := context.WithValue(r.Context(), contextKeyUser, user)
+		ctx = context.WithValue(ctx, contextKeyIsAuthenticated, true)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }

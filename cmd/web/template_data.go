@@ -23,6 +23,7 @@ type TemplateData struct {
 	FormErrors      map[string]string
 	FormData        map[string]string
 	IsAuthenticated bool
+	UserRole        int64
 }
 
 // Initializes a new TemplateData struct with default values.

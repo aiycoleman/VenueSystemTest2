@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="../static/css/nav.css">
 </head>
 <body>
-    <div class="navbar">
+   <div class="navbar">
         <div class="navbar-left">
             <a href="/">Home</a>
+            
+            {{ if .IsAuthenticated }}
             <a href="/venue/listing">Venues</a>
             <div class="dropdown">
                 <a href="#" class="dropbtn">Reservations</a>
@@ -19,12 +21,18 @@
                     <a href="/reservations/cancelled">Cancelled</a>
                 </div>
             </div>
-        </div>
-        
+            {{ end }}
+         </div>
+
         <div class="navbar-right">
-            <a href="/user/signup">Sign Up</a>
-            <a href="/user/login">Login</a>
-            <a href="/user/logout">Logout</a>
+            {{ if .IsAuthenticated }}
+                <form action="/user/logout" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            {{ else }}
+                <a href="/user/signup">Sign Up</a>
+                <a href="/user/login">Login</a>
+            {{ end }}
         </div>
     </div>
 

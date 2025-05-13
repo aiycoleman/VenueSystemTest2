@@ -10,10 +10,12 @@
 
 </head>
 <body>
-    <div class="navbar">
+   <div class="navbar">
         <div class="navbar-left">
             <a href="/">Home</a>
-            <a href="/venuelisting">Venues</a>
+            
+            {{ if .IsAuthenticated }}
+            <a href="/venue/listing">Venues</a>
             <div class="dropdown">
                 <a href="#" class="dropbtn">Reservations</a>
                 <div class="dropdown-content">
@@ -21,13 +23,18 @@
                     <a href="/reservations/cancelled">Cancelled</a>
                 </div>
             </div>
-        </div>
-        
-        <div class="navbar-right">
-            <a href="/user/signup">Sign Up</a>
-            <a href="/user/login">Login</a>
-            <a href="/user/logout">Logout</a>
+            {{ end }}
+         </div>
 
+        <div class="navbar-right">
+            {{ if .IsAuthenticated }}
+                <form action="/user/logout" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            {{ else }}
+                <a href="/user/signup">Sign Up</a>
+                <a href="/user/login">Login</a>
+            {{ end }}
         </div>
     </div>
 

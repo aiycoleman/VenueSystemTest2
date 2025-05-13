@@ -118,5 +118,32 @@ func (m *UsersModel) Authenticate(email, password string) (int, error) {
 }
 
 func (m *UsersModel) Get(id int) (*Users, error) {
-	return nil, nil
+	query := `
+		SELECT id, name, email, role, password_hash, activated, created_at
+		FROM users
+		WHERE id = $1`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var user Users
+
+	err := m.DB.QueryRowContext(ctx, query, id).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.Role,
+		&user.HashedPassword,
+		&user.Active,
+		&user.CreatedAt,
+	)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, sql.ErrNoRows
+		}
+		return nil, err
+	}
+
+	return &user, nil
 }

@@ -10,17 +10,32 @@
 <body>
 
     <div class="navbar">
-        <a href="/">Home</a>
-        <a href="/venuelisting">Venues</a>
-        <div class="dropdown">
-            <a href="#" class="dropbtn">Reservations</a>
-            <div class="dropdown-content">
-                <a href="/reservations">Confirmed</a>
-                <a href="/reservations/cancelled">Cancelled</a>
+        <div class="navbar-left">
+            <a href="/">Home</a>
+            
+            {{ if .IsAuthenticated }}
+            <a href="/venue/listing">Venues</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Reservations</a>
+                <div class="dropdown-content">
+                    <a href="/reservations">Confirmed</a>
+                    <a href="/reservations/cancelled">Cancelled</a>
+                </div>
             </div>
+            {{ end }}
+         </div>
+
+        <div class="navbar-right">
+            {{ if .IsAuthenticated }}
+                <form action="/user/logout" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            {{ else }}
+                <a href="/user/signup">Sign Up</a>
+                <a href="/user/login">Login</a>
+            {{ end }}
         </div>
     </div>
-
     <h1>{{.Title}}</h1>
 
     <main class="page-content">

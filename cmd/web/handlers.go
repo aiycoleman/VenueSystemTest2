@@ -20,9 +20,13 @@ import (
 
 // ------------------------------- Home Handler --------------------------------
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
+	// Log the session value for debugging
+	app.logger.Info("Session userID", "value", app.session.Get(r, "authenticatedUserID"))
+
 	data := NewTemplateData(r)
 	data.Title = "Welcome to Venue Verge!"
 	data.HeaderText = "Find Your Perfect Venue!"
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	err := app.render(w, http.StatusOK, "home.tmpl", data)
 	if err != nil {
@@ -293,6 +297,7 @@ func (app *application) createVenue(w http.ResponseWriter, r *http.Request) {
 		td.HeaderText = "Add New Venue Details"
 		td.FormErrors = v.Errors
 		td.FormData = formData
+		td.IsAuthenticated = app.isAuthenticated(r)
 
 		err = app.render(w, http.StatusUnprocessableEntity, "venueform.tmpl", td)
 		if err != nil {
@@ -370,6 +375,7 @@ func (app *application) viewVenue(w http.ResponseWriter, r *http.Request) {
 	data.Title = venue.VenueName
 	data.HeaderText = "Details for " + venue.VenueName
 	data.Flash = app.session.PopString(r, "flash")
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	// Add the single venue to the data
 	data.Venue = venue
@@ -387,9 +393,13 @@ func (app *application) viewVenue(w http.ResponseWriter, r *http.Request) {
 
 // Form page displayed to add venue
 func (app *application) venueForm(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value(contextKeyUser).(*data.Users)
+	fmt.Println("User role is:", user.Role)
+
 	data := NewTemplateData(r)
 	data.Title = "Add Venue"
 	data.HeaderText = "Establish Your New Venue!"
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	err := app.render(w, http.StatusOK, "venueform.tmpl", data)
 	if err != nil {
@@ -415,6 +425,7 @@ func (app *application) venueListing(w http.ResponseWriter, r *http.Request) {
 	data.Title = "Venue"
 	data.HeaderText = "Your latest Venue Posts!"
 	data.Flash = app.session.PopString(r, "flash")
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	for _, j := range venues {
 		// Dereference each pointer
@@ -457,6 +468,7 @@ func (app *application) showUpdateVenueForm(w http.ResponseWriter, r *http.Reque
 	tmplData := NewTemplateData(r)
 	tmplData.Title = "Edit Venue"
 	tmplData.Venue = venue // Pass the venue pointer
+	tmplData.IsAuthenticated = app.isAuthenticated(r)
 
 	// Render the template
 	err = app.render(w, http.StatusOK, "editvenue.tmpl", tmplData)
@@ -540,6 +552,7 @@ func (app *application) updateVenue(w http.ResponseWriter, r *http.Request) {
 		td.HeaderText = "Update Venue Details"
 		td.FormErrors = v.Errors
 		td.FormData = formData
+		td.IsAuthenticated = app.isAuthenticated(r)
 
 		err = app.render(w, http.StatusUnprocessableEntity, "editvenue.tmpl", td)
 		if err != nil {
@@ -738,6 +751,7 @@ func (app *application) createReservation(w http.ResponseWriter, r *http.Request
 		tmplData.Venue = &data.Venue{ID: int64(id)} // minimal venue data
 		tmplData.FormData = formData
 		tmplData.FormErrors = v.Errors
+		tmplData.IsAuthenticated = app.isAuthenticated(r)
 
 		err = app.render(w, http.StatusUnprocessableEntity, "viewvenue.tmpl", tmplData)
 		if err != nil {
@@ -770,6 +784,7 @@ func (app *application) showAllReservations(w http.ResponseWriter, r *http.Reque
 
 	data := NewTemplateData(r)
 	data.Title = "Confirmed Reservations"
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	for _, r := range reservations {
 		// Dereference each pointer
@@ -795,6 +810,7 @@ func (app *application) showCancelledReservations(w http.ResponseWriter, r *http
 	data := NewTemplateData(r)
 	data.Title = "Cancelled Reservations"
 	data.Flash = app.session.PopString(r, "flash")
+	data.IsAuthenticated = app.isAuthenticated(r)
 
 	for _, r := range reservations {
 		data.Reservation = append(data.Reservation, *r)
@@ -869,6 +885,7 @@ func (app *application) showUpdateReservationForm(w http.ResponseWriter, r *http
 	tmplData := NewTemplateData(r)
 	tmplData.Title = "Edit Reservation"
 	tmplData.Reservation = []data.Reservation{*reservation}
+	tmplData.IsAuthenticated = app.isAuthenticated(r)
 
 	err = app.render(w, http.StatusOK, "updatereservation.tmpl", tmplData)
 	if err != nil {
@@ -968,6 +985,7 @@ func (app *application) updateReservation(w http.ResponseWriter, r *http.Request
 		tmplData.Venue = &data.Venue{ID: venueID}
 		tmplData.FormData = formData
 		tmplData.FormErrors = v.Errors
+		tmplData.IsAuthenticated = app.isAuthenticated(r)
 
 		err = app.render(w, http.StatusUnprocessableEntity, "updatereservation.tmpl", tmplData)
 		if err != nil {
