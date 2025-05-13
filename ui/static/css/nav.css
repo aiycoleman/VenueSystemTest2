@@ -94,3 +94,21 @@
 .hidden {
     display: none;
 }
+
+.navbar .navbar-right button {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbar-right button:hover {
+    background-color: #515050;
+    border-radius: 4px;
+}

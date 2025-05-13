@@ -23,7 +23,7 @@ func (app *application) routes() http.Handler {
 		app.session.Enable,
 		app.loggingMiddleware,
 		app.authenticate,
-		// noSurf,
+		noSurf,
 	)
 
 	// Public routes

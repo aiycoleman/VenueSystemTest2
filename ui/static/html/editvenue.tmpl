@@ -27,6 +27,7 @@
 
     <div class="form-container">
         <form method="POST" action="/venue/{{.Venue.ID}}/edit">
+            <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
             <div class="form-group">
                 <label for="venue_name">Venue Name</label>
                 <input type="text" id="venue_name" name="venue_name" 

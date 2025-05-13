@@ -29,6 +29,7 @@
         <div class="navbar-right">
             {{ if .IsAuthenticated }}
                 <form action="/user/logout" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
                     <button type="submit">Logout</button>
                 </form>
             {{ else }}

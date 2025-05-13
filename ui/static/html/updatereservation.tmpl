@@ -28,6 +28,7 @@
         <div class="navbar-right">
             {{ if .IsAuthenticated }}
                 <form action="/user/logout" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
                     <button type="submit">Logout</button>
                 </form>
             {{ else }}
@@ -42,7 +43,7 @@
         {{range .Reservation}}
         <div class="form-container">
             <form action="/reservations/update/{{.ID}}" method="POST">
-
+                <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
                 <div class="form-group">
                     <label for="start_date">Start Date</label>
                     <input type="date" id="start_date" name="start_date" 
