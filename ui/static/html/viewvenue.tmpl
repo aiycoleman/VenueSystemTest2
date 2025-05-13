@@ -118,16 +118,19 @@
         <h2>Make Reservation</h2>
         <form method="POST" action="/reservation/{{.Venue.ID}}/create">
           <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
+          <label for="start_date">Date:</label>
           <input type="date" name="start_date"
             value="{{index .FormData "start_date"}}"
             class="{{if .FormErrors.start_date}}invalid{{end}}">
           {{with .FormErrors.start_date}}<div class="error">{{.}}</div>{{end}}
 
+          <label for="start_time">Start Time:</label>
           <input type="time" name="start_time"
             value="{{index .FormData "start_time"}}"
             class="{{if .FormErrors.start_time}}invalid{{end}}">
           {{with .FormErrors.start_time}}<div class="error">{{.}}</div>{{end}}
 
+          <label for="end_time">End Time:</label>
           <input type="time" name="end_time"
             value="{{index .FormData "end_time"}}"
             class="{{if .FormErrors.end_time}}invalid{{end}}">

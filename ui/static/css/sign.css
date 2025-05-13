@@ -27,6 +27,11 @@
     box-sizing: border-box;
 }
 
+.form-container input:focus {
+    border-color: #B9929F;
+    outline: none;
+}
+
 .form-container button {
     margin-top: 20px;
     padding: 10px;
@@ -40,4 +45,16 @@
 
 .form-container button:hover {
     background-color: #a87b8b;
+}
+
+/* Error Styling */
+.error {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+    text-decoration: underline;
+}
+
+input.invalid, textarea.invalid {
+    border: 3px solid #FF0000;
 }

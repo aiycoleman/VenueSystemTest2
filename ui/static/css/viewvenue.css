@@ -179,6 +179,11 @@ body {
   #review-form {
     margin-bottom: 1.5rem;
   }
+
+  #review-form textarea:focus{
+    border-color: #B9929F;
+    outline: none;
+  }
   
   /* Review Cards */
   .review-card {

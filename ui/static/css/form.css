@@ -64,7 +64,7 @@ textarea {
     min-height: 150px;
 }
 
-.form-group input:focus, .form-group textarea:focus {
+.form-group input:focus, .form-group textarea:focus{
     border-color: #B9929F;
     outline: none;
 }
