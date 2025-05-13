@@ -377,6 +377,14 @@ func (app *application) viewVenue(w http.ResponseWriter, r *http.Request) {
 	data.Flash = app.session.PopString(r, "flash")
 	data.IsAuthenticated = app.isAuthenticated(r)
 
+	// Extract user role from context
+	roleVal := r.Context().Value(contextKeyUserRole)
+	if roleVal != nil {
+		if role, ok := roleVal.(int64); ok {
+			data.UserRole = role
+		}
+	}
+
 	// Add the single venue to the data
 	data.Venue = venue
 
@@ -414,18 +422,26 @@ func (app *application) venueListing(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Security-Policy header to allow external images
 	w.Header().Set("Content-Security-Policy", "img-src 'self' https: data:;")
 
+	data := NewTemplateData(r)
+	data.Title = "Venue"
+	data.HeaderText = "Your latest Venue Posts!"
+	data.Flash = app.session.PopString(r, "flash")
+	data.IsAuthenticated = app.isAuthenticated(r)
+
+	// Extract user role from context
+	roleVal := r.Context().Value(contextKeyUserRole)
+	if roleVal != nil {
+		if role, ok := roleVal.(int64); ok {
+			data.UserRole = role
+		}
+	}
+
 	venues, err := app.venue.FetchAllVenues()
 	if err != nil {
 		app.logger.Error("failed to get venues", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-
-	data := NewTemplateData(r)
-	data.Title = "Venue"
-	data.HeaderText = "Your latest Venue Posts!"
-	data.Flash = app.session.PopString(r, "flash")
-	data.IsAuthenticated = app.isAuthenticated(r)
 
 	for _, j := range venues {
 		// Dereference each pointer

@@ -15,6 +15,7 @@ type contextKey string
 
 const contextKeyUser = contextKey("user")
 const contextKeyIsAuthenticated = contextKey("isAuthenticated")
+const contextKeyUserRole = contextKey("userRole")
 
 func (app *application) loggingMiddleware(next http.Handler) http.Handler {
 	// Define a handler function that wraps the provided handler.
@@ -104,11 +105,16 @@ func (app *application) requireRole(role int) func(next http.Handler) http.Handl
 				"requiredRole", role,
 			)
 
-			// Convert role to int64 for comparison
+			// Check role
 			if user.Role != int64(role) {
 				http.Redirect(w, r, "/unauthorized", http.StatusSeeOther)
 				return
 			}
+
+			// Add role to context
+			ctx := context.WithValue(r.Context(), contextKeyUserRole, user.Role)
+			r = r.WithContext(ctx)
+
 			next.ServeHTTP(w, r)
 		})
 	}

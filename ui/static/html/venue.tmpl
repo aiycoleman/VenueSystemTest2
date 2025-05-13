@@ -43,9 +43,7 @@
             <h1>{{.Title}}</h1>
             <h2>{{.HeaderText}}</h2>
         </div>
-        {{ if and .IsAuthenticated }}
-        <a class="add-button" href="/venue/form">Add Venue</a>
-        {{ end }}
+            <a href="/venue/form" class="add-button">Add Venue</a>
     </div>
 
     {{if .Flash}}
